@@ -1,5 +1,5 @@
 
-# 🏦 Microservicio Banca - Despliegue con Docker y Docker Compose
+# 🏦 Microservicio Banca - Despliegue con Docker
 
 Este proyecto contiene dos microservicios desarrollados con **Java Spring Boot**:
 
@@ -12,11 +12,12 @@ Además, se utiliza **PostgreSQL** como base de datos y **RabbitMQ** como broker
 
 ## 📦 Requisitos Previos
 
-- [Docker](https://docs.docker.com/get-docker/)
-- [Docker Compose](https://docs.docker.com/compose/)
+- Docker Desktop:
+- Java JDK 17
+- Maven 3.9.9
 
 ---
-
+![img.png](img.png)
 ## 🧱 Estructura del Proyecto
 
 ```
@@ -44,15 +45,15 @@ ejercicio-practico-backend/
 
 ## 🚀 Pasos para Desplegar
 
-### 1. Compilar los microservicios y levantar contenedores
-
 ## Ejecutar el archivo docker-compose.sh
 ### Paso 1. Abrir PowerShell como administrador 
 ### Paso 2. Dirigirse al directorio raiz del proyecto \ejercicio-practico-backend
+### Ejemplo: cd D:\JORGE\APPS\ejercicio-practico-backend
 ### Paso 3. Copiar la intrucción: & "C:\Program Files\Git\bin\bash.exe" -c "./docker-compose.sh"
 ### Paso 4. Presionar la tecla Enter
+### Contenido del .sh
 ```bash
-cd msvc-ejercicio-practico
+cd msvc-customer-person
 mvn clean package -DskipTests
 # Verificar si la compilación fue exitosa
 if [ $? -ne 0 ]; then
@@ -78,9 +79,9 @@ docker-compose up
 
 | Servicio         | URL                                   | Puerto        |
 |------------------|---------------------------------------|---------------|
-| api/clientes  | http://localhost:8084/api/clientes    | 8084          |
-| /api/cuentas | http://localhost:8085/api/cuentas     | 8085          |
-| /api/cuentas | http://localhost:8085/api/movimientos | 8085          |
+| api/clientes     | http://localhost:8084/api/clientes    | 8084          |
+| /api/cuentas     | http://localhost:8085/api/cuentas     | 8085          |
+| /api/movimientos | http://localhost:8085/api/movimientos | 8085          |
 | RabbitMQ UI      | http://localhost:15672                | 5672 |
 
 ---
