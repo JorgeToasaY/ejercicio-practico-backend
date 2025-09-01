@@ -24,7 +24,7 @@ public class AccountController {
         return new ResponseEntity<>(accountService.createAccount(request), HttpStatus.CREATED);
     }
 
-    @PutMapping("/{accountNumber}")
+    @PatchMapping("/{accountNumber}")
     public ResponseEntity<AccountResponseDTO> update(@PathVariable String accountNumber, @RequestBody @Validated AccountUpdateRequestDTO request) {
         return ResponseEntity.ok(accountService.updateAccount(accountNumber, request));
     }

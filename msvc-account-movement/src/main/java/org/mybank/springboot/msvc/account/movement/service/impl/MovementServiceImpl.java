@@ -19,6 +19,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,12 +45,12 @@ public class MovementServiceImpl implements MovementService {
         BigDecimal newBalance;
 
         if (request.getMovementType().equalsIgnoreCase("Retiro")) {
-            if (movementAmount.compareTo(currentBalance)>0) {
+            if (movementAmount.abs().compareTo(currentBalance)>0) {
                 throw new AccountException("Saldo no disponible");
             }
-            newBalance = currentBalance.subtract(movementAmount);
+            newBalance = currentBalance.subtract(movementAmount.abs());
         } else {
-            newBalance = currentBalance.add(movementAmount);
+            newBalance = currentBalance.add(movementAmount.abs());
         }
 
         // Actualiza el saldo en la cuenta
@@ -81,12 +82,12 @@ public class MovementServiceImpl implements MovementService {
         BigDecimal newBalance;
 
         if (request.getMovementType().equalsIgnoreCase("Retiro")) {
-            if (movementAmount.compareTo(currentBalance)>0) {
+            if (movementAmount.abs().compareTo(currentBalance)>0) {
                 throw new AccountException("Saldo no disponible");
             }
-            newBalance = currentBalance.subtract(movementAmount);
+            newBalance = currentBalance.subtract(movementAmount.abs());
         } else {
-            newBalance = currentBalance.add(movementAmount);
+            newBalance = currentBalance.add(movementAmount.abs());
         }
 
         // Actualiza el saldo en la cuenta
@@ -110,6 +111,10 @@ public class MovementServiceImpl implements MovementService {
 
     @Override
     public List<ReportResponseDTO> getReport(String customerId, LocalDateTime startDate, LocalDateTime endDate) {
+
+        LocalDateTime dateTime;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
         List<Account> listAccount = accountRepository.findByCustomerId(customerId);
 
         List<ReportResponseDTO> report = new ArrayList<>();
@@ -117,16 +122,18 @@ public class MovementServiceImpl implements MovementService {
         for (Account account : listAccount) {
             List<Movement> movements = movementRepository.findByAccountAndDateBetween(account, startDate, endDate);
             for (Movement m : movements) {
+                dateTime = LocalDateTime.parse(m.getDate().toString());
                 report.add(new ReportResponseDTO(
-                        m.getDate().toString(),
+                        dateTime.format(formatter),
                         getCustomerName(customerId),
                         account.getAccountNumber(),
                         account.getAccountType(),
                         account.getInitialBalance(),
                         account.getState(),
-                        m.getMovementType().equals(RETIRO) ? m.getAmount().negate() : m.getAmount(),
+                        m.getAmount(),
                         m.getBalance()
                 ));
+
             }
         }
         return report;

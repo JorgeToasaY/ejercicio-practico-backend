@@ -22,9 +22,9 @@ class CustomerRepositoryTest {
     void shouldSaveAndFindByCustomerId() {
         Customer c = new Customer();
         c.setName("Ana"); c.setGender("F"); c.setAge(30);
-        c.setIdentification("123"); c.setCustomerId("C-001");
-        c.setPassword("pwd"); c.setState(true);
+        c.setIdentification("123002"); c.setCustomerId("C-002");
+        c.setPassword("12345"); c.setState(true);
         repo.save(c);
-        assertTrue(repo.findByCustomerId("C-001").isPresent());
+        assertTrue(repo.findByCustomerId("C-002").isPresent());
     }
 }

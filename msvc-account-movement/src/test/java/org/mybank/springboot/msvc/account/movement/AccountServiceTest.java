@@ -1,5 +1,6 @@
 package org.mybank.springboot.msvc.account.movement;
 
+import lombok.extern.slf4j.Slf4j;
 import org.mybank.springboot.msvc.account.movement.dto.AccountRequestDTO;
 import org.mybank.springboot.msvc.account.movement.dto.AccountResponseDTO;
 import org.mybank.springboot.msvc.account.movement.entity.Account;
@@ -17,6 +18,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.math.BigDecimal;
 
 @ExtendWith(MockitoExtension.class)
+@Slf4j
 class AccountServiceTest {
 
     @InjectMocks
@@ -31,11 +33,11 @@ class AccountServiceTest {
     @Test
     void testCreateAccount() {
         AccountRequestDTO request = AccountRequestDTO.builder()
-                .accountNumber("123456")
+                .accountNumber("123456002")
                 .accountType("Ahorros")
                 .initialBalance(BigDecimal.valueOf(1000))
                 .state(true)
-                .customerId("CUST000111")
+                .customerId("CUST000013")
                 .build();
 
         Account entity = new Account();
@@ -46,12 +48,12 @@ class AccountServiceTest {
         entity.setCustomerId(request.getCustomerId());
 
         AccountResponseDTO response = AccountResponseDTO.builder()
-                .accountNumber("123456")
+                .accountNumber("123456002")
                 .accountType("Ahorros")
                 .initialBalance(BigDecimal.valueOf(1000))
                 .state(true)
                 .initialBalance(BigDecimal.valueOf(1000))
-                .customerId("CUST000111")
+                .customerId("CUST000013")
                 .build();
 
         Mockito.lenient().when(accountMapper.toEntity(request)).thenReturn(entity);
@@ -59,7 +61,8 @@ class AccountServiceTest {
         Mockito.lenient().when(accountMapper.toDto(entity)).thenReturn(response);
 
         AccountResponseDTO result = accountService.createAccount(request);
+        log.info("Resultado del test -> accountNumber: {}, customerId: {}", result.getAccountNumber(), result.getCustomerId());
 
-        Assertions.assertEquals("123456", result.getAccountNumber());
+        Assertions.assertEquals("123456002", result.getAccountNumber());
     }
 }

@@ -22,13 +22,8 @@ public class AccountServiceImpl implements AccountService {
     private final AccountMapper accountMapper;
     @Override
     public AccountResponseDTO createAccount(AccountRequestDTO request) {
-        Account account = new Account();
-        account.setAccountNumber(request.getAccountNumber());
-        account.setAccountType(request.getAccountType());
-        account.setInitialBalance(request.getInitialBalance());
+        Account account = accountMapper.toEntity(request);
         account.setAvailableBalance(request.getInitialBalance());
-        account.setState(request.getState());
-        account.setCustomerId(request.getCustomerId());
         account = accountRepository.save(account);
         return  accountMapper.toDto(account);
     }

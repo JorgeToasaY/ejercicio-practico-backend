@@ -39,9 +39,9 @@ public class MovementController {
 
     @GetMapping("/reportes")
     public ResponseEntity<List<ReportResponseDTO>> getReport(
-            @RequestParam String customer,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime desde,
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime hasta) {
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime hasta,
+            @RequestParam String customer) {
         return ResponseEntity.ok(movementService.getReport(customer, desde, hasta));
     }
 }

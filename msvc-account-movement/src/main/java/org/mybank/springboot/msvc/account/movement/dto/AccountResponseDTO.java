@@ -19,4 +19,6 @@ public class AccountResponseDTO implements Serializable {
     private BigDecimal initialBalance;
     private Boolean state;
     private String customerId;
+    private BigDecimal availableBalance;
+
 }

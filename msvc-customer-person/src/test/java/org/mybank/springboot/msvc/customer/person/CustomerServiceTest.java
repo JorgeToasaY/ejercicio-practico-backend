@@ -3,6 +3,7 @@ package org.mybank.springboot.msvc.customer.person;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+import lombok.extern.slf4j.Slf4j;
 import org.mybank.springboot.msvc.customer.person.dto.CustomerResponseDTO;
 import org.mybank.springboot.msvc.customer.person.entity.Customer;
 import org.mybank.springboot.msvc.customer.person.exception.CustomerException;
@@ -19,6 +20,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 @ExtendWith(MockitoExtension.class)
+@Slf4j
 public class CustomerServiceTest {
     @Mock
     private CustomerRepository customerRepository;
@@ -31,14 +33,14 @@ public class CustomerServiceTest {
 
     @Test
     void testGetCustomerByCustomerId() {
-        String customerId = "CUST0001";
+        String customerId = "CUST000013";
         Customer customer = new Customer();
         customer.setCustomerId(customerId);
-        customer.setName("Jorge Toasa");
+        customer.setName("Jose Lema");
 
         CustomerResponseDTO customerResponseDTO = new CustomerResponseDTO();
         customerResponseDTO.setCustomerId(customerId);
-        customerResponseDTO.setName("Jorge Toasa");
+        customerResponseDTO.setName("Jose Lema");
 
         when(customerRepository.findByCustomerId(customerId)).thenReturn(Optional.of(customer));
         when(customerMapper.toDto(customer)).thenReturn(customerResponseDTO);
@@ -47,8 +49,8 @@ public class CustomerServiceTest {
 
         assertNotNull(result);
         assertEquals(customerId, result.getCustomerId());
-        assertEquals("Jorge Toasa", result.getName());
-
+        assertEquals("Jose Lema", result.getName());
+        log.info("Resultado del test -> customerId: {}, name: {}", result.getCustomerId(), result.getName());
         verify(customerRepository, times(1)).findByCustomerId(customerId);
         verify(customerMapper, times(1)).toDto(customer);
     }
@@ -58,12 +60,13 @@ public class CustomerServiceTest {
         String customerId = "CUST0051";
 
         when(customerRepository.findByCustomerId(customerId)).thenReturn(Optional.empty());
-
+        CustomerResponseDTO result = new CustomerResponseDTO();
         CustomerException exception = assertThrows(CustomerException.class, () -> {
-            customerService.getCustomerByCustomerId(customerId);
+            result: customerService.getCustomerByCustomerId(customerId);
         });
 
         assertEquals("Customer with id CUST0051 not found", exception.getMessage());
+        log.info("Resultado del test -> customerId: {}, name: {}", result.getCustomerId(), result.getName());
         verify(customerRepository, times(1)).findByCustomerId(customerId);
         verify(customerMapper, never()).toDto(any());
     }
