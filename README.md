@@ -12,7 +12,7 @@ Además, se utiliza **PostgreSQL** como base de datos y **RabbitMQ** como broker
 
 ## 📦 Requisitos Previos
 
-- Docker Desktop:
+- Docker Desktop
 - Java JDK 17
 - Maven 3.9.9
 
